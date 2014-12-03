@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="muse" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Muse</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <script src="../../bower_components/angular/angular.js"></script>
+  <script src="../../bower_components/angular-mocks/angular-mocks.js"></script>
+  </head>
+  <body>
+    <h1>Muse</h1>
+    <form name="queryForm" ng-submit='query(query)'>
+        <input type='text' name="query" ng-model='query' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
+        <button>Search</button>
+    </form>
+  </body>
+  </html>
