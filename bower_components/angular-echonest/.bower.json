@@ -1,0 +1,15 @@
+{
+  "name": "angular-echonest",
+  "main": "build/angular-echonest.js",
+  "homepage": "https://github.com/Kraku/angular-echonest",
+  "_release": "65f49da82b",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "65f49da82b7d43b993c02e1ace30e4092ceed2b2"
+  },
+  "_source": "git://github.com/Kraku/angular-echonest.git",
+  "_target": "*",
+  "_originalSource": "angular-echonest",
+  "_direct": true
+}

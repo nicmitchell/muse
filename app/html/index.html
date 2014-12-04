@@ -2,7 +2,8 @@
 <!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="muse" class="no-js"> <!--<![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en" ng-app="muse"> <!--<![endif]-->
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,12 +11,21 @@
   <link rel="stylesheet" href="../css/style.css">
   <script src="../../bower_components/angular/angular.js"></script>
   <script src="../../bower_components/angular-mocks/angular-mocks.js"></script>
+  <script src="../../bower_components/angular-echonest/src/angular-echonest.js"></script>
+  <script src="../javascript/services/services.js"></script>
+  <script src="../javascript/app.js"></script>
   </head>
   <body>
     <h1>Muse</h1>
-    <form name="queryForm" ng-submit='query(query)'>
-        <input type='text' name="query" ng-model='query' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
+    <form ng-controller="QueryController" name="queryForm" ng-submit='search(artist, title)'>
+        <h3>Artist</h3>
+        <input type='text' name="artist" ng-model='artist' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
+        <h3>Title</h3>
+        <input type='text' name="title" ng-model='title' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
         <button>Search</button>
+        <h3>Searching for {{artist}} {{title}}</h3>
+        <div ng-controller="PlaylistController" ng-show="songs"></div>
     </form>
+
   </body>
   </html>
