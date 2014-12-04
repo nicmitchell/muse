@@ -1,37 +1,76 @@
-angular.module('services', [])
+var services = angular.module('services', ['angular-echonest'])
 
-.factory('Ech', function ($http) {
+var echonestApiKey = 'CNQ7EJLGCHNW8QOIT';
 
-   //FIREBASE HOOKUP
-        // var ref = new Firebase("https://hackathon-app.firebaseio.com/data");
-        // var sync = $firebase(ref);
-        // // create a synchronized array for use in our HTML code
-        // scope.messages = sync.$asArray();
+services.config(['EchonestProvider', function(EchonestProvider) {
+  EchonestProvider.setApiKey(echonestApiKey);
+}]);
 
-  var get = function(query) {
-    return $http({
-      method: 'GET',
-      url: 'https://www.quandl.com/api/v1/datasets/WIKI/' + query.toUpperCase() + '.csv?auth_token=Lmzt-LAWzHDzykUrZYU8&column=4&collapse=weekly&trim_start=2000-01-01&trim_end=2014-01-01&sort_order=asc&transformation=rdiff'
-    })
-    .then(function(resp){
-      // console.log(resp.data);
-      return resp.data;
+services.factory('EchonestFactory', function ($http, Echonest) {
+
+  var search = function(artist, title){
+
+    var results = {};
+
+    Echonest.songs.search({
+      artist: artist || null,
+      title: title || null,
+      //return songs
+    }).then(function(songs) {
+      results.songs = songs;
+      console.log('SONG RESULT', songs);
+
+      //get artist info on top result
+      Echonest.artists.get({
+        id: songs[0].artist_id,
+        bucket: 'terms'
+      }).then(function(artist) {
+        results.artist_summary = artist;
+        console.log('ARTIST SUMMARY', artist_summary);
+        return results;
+      })
+
+      //get audio summary on top result
+      Echonest.songs.get({
+        id: songs[0].id,
+        bucket: 'audio_summary'
+      }).then(function(audio_summary) {
+        results.audio_summary = audio_summary;
+        console.log('AUDIO SUMMARY', audio_summary);
+        return results;
+      })
+      return results;
     });
   };
-
-  var addStock = function (query) {
-    return $http({
-      method: 'POST',
-      url: '/api/stocks',
-      data: stocks
-    });
-  };
-
 
   return {
-    get: get,
-    addStock: addStock
+    search: search
   };
 
+});
 
-})
+services.factory('Youtube', function ($http) {
+
+    var search = function(){
+      var youtubeApiKey = 'AIzaSyD8M6zcr3cPZlLL1XmBnRWBUlblNEYzMBo';
+
+      //Query for youtube results based on echonest selected song
+      var dataurl ='http://gdata.youtube.com/feeds/api/videos?q=' + Echonest.search.songs[0].title + '%20' + Echonest.search.songs[0]._____ + '&orderby=rating&alt=json';
+
+        $http.get(dataurl).success(function(data){
+            return  data.feed.entry;
+        });
+
+      //Return media for irst result of query
+      // $http.get('http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey + '&artist=' + artist.name + '&format=json&results=5&type=artist').success(function(data, status, headers, config) {
+      //   playlist = data;
+      // })
+      // .error(function(data, status, headers, config) {
+      //   console.log('error');
+      // });
+    }
+
+  return {
+    search: search
+  }
+});

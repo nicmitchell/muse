@@ -1,76 +1,53 @@
 'use strict';
 
 var muse = angular.module('muse', [
-  // 'services',
-  'angular-echonest'
+  'services'
 ]);
 
-var apiKey = 'CNQ7EJLGCHNW8QOIT';
-muse.config(['EchonestProvider', function(EchonestProvider) {
-  EchonestProvider.setApiKey(apiKey);
-}]);
-
-muse.controller("QueryController", function($scope,$http,Echonest) {
-
+muse.controller("QueryController", function($scope,$http, EchonestFactory) {
 //USE songs/artist suggest for error handling
-
 //Search for songs based on query
-  $scope.search = function(artist, title){
-
-    //set up variables
-    // $scope.artist,
-    // $scope.audio_summary,
-    // $scope.songs
-    // $scope.data.artist =
-    // $scope.artist_summary = artist name
-    var results = {};
-
-    Echonest.songs.search({
-      artist: artist || null,
-      title: title || null,
-      //return songs
-    }).then(function(songs) {
-      results.songs = songs;
-      console.log('SONG RESULT', $scope.songs);
-
-      //get artist info on top result
-      Echonest.artists.get({
-        id: songs[0].artist_id,
-        bucket: 'terms'
-      }).then(function(artist) {
-        $scope.artist_summary = artist;
-        console.log('ARTIST SUMMARY', $scope.artist_summary);
-      })
-
-      //get audio summary on top result
-      Echonest.songs.get({
-        id: songs[0].id,
-        bucket: 'audio_summary'
-      }).then(function(audio_summary) {
-        $scope.audio_summary = audio_summary;
-        console.log('AUDIO SUMMARY', $scope.audio_summary);
-      })
-      return results;
-    });
+  $scope.search = function(artist,title){
+    EchonestFactory.search(artist,title);
   }
 });
 
 
-muse.controller("PlaylistController", function($scope,$http,Echonest,QueryController) {
-        
-        console.log('SONGS IN PLAYLIST',QueryController.songs);
+muse.controller("PlaylistController", function($scope,$http, EchonestFactory) {
+  var playlist;
 
-        $http.get('http://developer.echonest.com/api/v4/playlist/static?api_key=' + apiKey + '&artist=' + artist.name + '&format=json&results=10&type=artist').success(function(data, status, headers, config) {
-          playlist = data;
-        })
-        .error(function(data, status, headers, config) {
-          console.log('error');
-        });
+  $scope.search = function(artist, danceability, energy){
+    var queryURL = 'http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey;
+    if(artist){
+      queryURL += '&artist=' + artist.name;
+    }
+    if(danceability){
+      queryURL += '&max_danceability' + danceability;
+    }
+    if(energy){
+      queryURL += '&max_energy' + energy;
+    }
+    queryURL += '&format=json&results=5&type=artist-radio';
+    // $http.get('http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey + '&artist=' + artist.name + '&format=json&results=5&type=artist')
+    $http.get(queryURL)
+    .success(function(data, status, headers, config) {
+      $scope.playlist = data;
+      console.log(data);
+    })
+    .error(function(data, status, headers, config) {
+      console.log('error');
+    });
+  };
 
 });
 
 
 
+muse.controller("YoutubeController", function($scope,$http, Youtube) {
+
+
+
+});
 
 
 // create a playlist
