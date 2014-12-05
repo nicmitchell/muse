@@ -65,7 +65,6 @@ services.factory('PlaylistFactory', function($http){
 
     $http.get(queryURL)
     .success(function(data, status, headers, config) {
-      console.log(data);
       results.playlist = data;
       return data;
     })
@@ -84,14 +83,20 @@ services.factory('PlaylistFactory', function($http){
 
 services.factory('YoutubeFactory', function ($http) {
 
+    var results = {};
     var search = function(artist, title){
+      console.log(artist);
       var youtubeApiKey = 'AIzaSyD8M6zcr3cPZlLL1XmBnRWBUlblNEYzMBo';
 
       //Query for youtube results based on echonest selected song
-      var dataurl ='http://gdata.youtube.com/feeds/api/videos?q=' + Echonest.search.songs[0].title + '%20' + Echonest.search.songs[0]._____ + '&orderby=rating&alt=json';
+      var dataurl ='http://gdata.youtube.com/feeds/api/videos?q=' + title + '%20' + artist + '&orderby=rating&alt=json';
 
         $http.get(dataurl).success(function(data){
+            console.log('YOUTUBE RESULTS', data.feed.entry)
             return  data.feed.entry;
+            var vidId = data.feed.entry[0].id.$t
+            var result = vidId.split('videos/')[1]
+            results.push(result);
         });
 
       //Return media for irst result of query
@@ -104,6 +109,7 @@ services.factory('YoutubeFactory', function ($http) {
     }
 
   return {
-    search: search
+    search: search,
+    results: results
   }
 });

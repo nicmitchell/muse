@@ -14,12 +14,26 @@ muse.config(function($stateProvider){
     });
 });
 
-muse.controller("QueryController", function($scope,$http, EchonestFactory) {
+muse.controller("QueryController", function($scope,$http, $q, EchonestFactory) {
 //USE songs/artist suggest for error handling
 //Search for songs based on query
   $scope.search = function(artist,title){
-    EchonestFactory.search(artist,title)
+    EchonestFactory.search(artist,title);
   }
+
+   // var defer = $q.defer();
+
+   //  defer.promise.then(function () {
+   //    console.log(EchonestFactory.results.audio_summary.audio_summary.danceability);
+   //    $scope.danceability = EchonestFactory.results.audio_summary.audio_summary.danceability;
+   //    $scope.energy = EchonestFactory.results.audio_summary.audio_summary.energy;
+   //    $scope.instrumentalness = EchonestFactory.results.audio_summary.audio_summary.instrumentalness;
+   //    $scope.liveness = EchonestFactory.results.audio_summary.audio_summary.liveness;
+   //    $scope.speachiness = EchonestFactory.results.audio_summary.audio_summary.speachiness;
+   //    $scope.initial = EchonestFactory.results.songs[0];
+   //  });
+
+   //  defer.resolve();
 });
 
 
@@ -27,24 +41,26 @@ muse.controller("PlaylistController", function($scope,$http, PlaylistFactory, Ec
 
   $scope.search = function(artist, danceability, energy){
       var playlist = PlaylistFactory.search(EchonestFactory.results.artist_summary.name, danceability, energy);
-
       $scope.playlist = PlaylistFactory.results;
       // console.log('PLAYLIST RESULTS', $scope.playlist);
-      // $scope.initialDanceability = PlaylistFactory.search($scope.selectedArtist, danceability, energy)[0]
     };
 
 });
 
 
 
-muse.controller("YoutubeController", function($scope,$http, Youtube) {
+muse.controller("YoutubeController", function($scope,$http, YoutubeFactory, EchonestFactory) {
 
 
-  $scope.search = function(artist, title){
-    YoutubeFactory.search();
+  $scope.youtubeSearch = function(artist, title){
+    console.log(EchonestFactory.results);
+    YoutubeFactory.search(artist, title);
+    // YoutubeFactory.search(EchonestFactory.results.songs[0].artist_name, EchonestFactory.results.songs[0].title);
+    console.log('YOUTUBE CONTROLLER', YoutubeFactory);
     // $scope.initialDanceability = PlaylistFactory.search($scope.selectedArtist, danceability, energy)[0]
   };
 
+  $scope.vidId = YoutubeFactory.results.vidId;
 });
 
 
