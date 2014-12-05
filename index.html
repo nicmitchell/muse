@@ -18,24 +18,42 @@
   <script src="app/app.js"></script>
   </head>
   <body>
-    <h1 class="row">Muse</h1>
-      <div ui-view></div>
-    <hr />
-    <div ng-controller="PlaylistController">
-      <form name="playlistForm" ng-submit='search(artist, danceability, energy)'>
-        <h3>** HIDDEN ** Artist</h3>
-        <input type='text' name="artist" ng-model='artist' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
-        <h3>Danceability</h3>
-        <input type='range' name="danceability" min='0' max='1' step='0.1' ng-model='danceability' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">{{danceability}}
-        <h3>Energy</h3>
-        <input type='range' name="energy" min='0' max='1' step='0.1' ng-model='energy' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">{{energy}}
-        <button>Update</button>
-      </form>
-      <h3>Playlist</h3>
-      <div ng-repeat="song in playlist.response.songs">
-        <div>Artist: {{song.artist_name}}</div>
-        <div>Song: {{song.title}}</div>
+    <div class="row">
+      <div class="column small-6">
+      <h1 class="row">Muse</h1>
+       <!--  <div ui-view>
+        </div> -->
+      <div ng-controller="QueryController">
+         <form name="queryForm" ng-submit='search(artist, title)'>
+          <h3>Artist</h3>
+          <input type='text' name="artist" ng-model='artist' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
+          <h3>Title</h3>
+          <input type='text' name="title" ng-model='title' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
+          <button>Search</button>
+          <h3>Searching for {{artist}} {{title}}</h3>
+        </form>
+
+
         <hr />
+        <div ng-controller="PlaylistController">
+          <form name="playlistForm" ng-submit='search(artist, danceability, energy)'>
+  <!--           <h3>** HIDDEN ** Artist</h3>
+            <input type='text' name="artist" ng-model='artist' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}"> -->
+            <h3>Danceability</h3>
+            <input type='range' name="danceability" min='0' max='1' step='0.1' value="initialDanceability" ng-model='danceability' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">{{danceability}}
+            <h3>Energy</h3>
+            <input type='range' name="energy" min='0' max='1' step='0.1' ng-model='energy' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">{{energy}}
+            <button style="clear:both; display:block;">Update Playlist</button>
+          </form>
+          <h3>Playlist</h3>
+          <div ng-repeat="song in playlist.playlist.response.songs" class="row">
+            <div class="column small-6">
+              <div>Artist: {{song.artist_name}}</div>
+              <div>Song: {{song.title}}</div>
+              <hr />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 

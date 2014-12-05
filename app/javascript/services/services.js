@@ -8,10 +8,8 @@ services.config(['EchonestProvider', function(EchonestProvider) {
 
 services.factory('EchonestFactory', function ($http, Echonest) {
 
+  var results = {};
   var search = function(artist, title){
-
-    var results = {};
-
     Echonest.songs.search({
       artist: artist || null,
       title: title || null,
@@ -44,45 +42,49 @@ services.factory('EchonestFactory', function ($http, Echonest) {
   };
 
   return {
-    search: search
+    search: search,
+    results: results
   };
 
 });
 
 services.factory('PlaylistFactory', function($http){
-
+  var results = {};
   var search = function(artist, danceability, energy){
-      var queryURL = 'http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey;
-      if(artist){
-        queryURL += '&artist=' + artist.name;
-      }
-      if(danceability){
-        queryURL += '&max_danceability' + danceability;
-      }
-      if(energy){
-        queryURL += '&max_energy' + energy;
-      }
-      queryURL += '&format=json&results=5&type=artist-radio';
-      // $http.get('http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey + '&artist=' + artist.name + '&format=json&results=5&type=artist')
-      $http.get(queryURL)
-      .success(function(data, status, headers, config) {
-        return data;
-        console.log(data);
-      })
-      .error(function(data, status, headers, config) {
-        console.log('error');
-      });
-    };
+    var queryURL = 'http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey;
+    if(artist){
+      queryURL += '&artist=' + artist;
+    }
+    if(danceability){
+      queryURL += '&max_danceability=' + danceability;
+    }
+    if(energy){
+      queryURL += '&max_energy=' + energy;
+    }
+    queryURL += '&format=json&results=5&type=artist-radio&bucket=audio_summary';
+
+    $http.get(queryURL)
+    .success(function(data, status, headers, config) {
+      console.log(data);
+      results.playlist = data;
+      return data;
+    })
+    .error(function(data, status, headers, config) {
+      console.log('error');
+    });
+    // return results;
+  };
 
   return {
-    search: search
+    search: search,
+    results: results
   };
 });
 
 
 services.factory('YoutubeFactory', function ($http) {
 
-    var search = function(){
+    var search = function(artist, title){
       var youtubeApiKey = 'AIzaSyD8M6zcr3cPZlLL1XmBnRWBUlblNEYzMBo';
 
       //Query for youtube results based on echonest selected song

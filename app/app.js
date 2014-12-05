@@ -18,37 +18,20 @@ muse.controller("QueryController", function($scope,$http, EchonestFactory) {
 //USE songs/artist suggest for error handling
 //Search for songs based on query
   $scope.search = function(artist,title){
-    EchonestFactory.search(artist,title);
+    EchonestFactory.search(artist,title)
   }
 });
 
 
-muse.controller("PlaylistController", function($scope,$http, EchonestFactory) {
-  // var playlist;
+muse.controller("PlaylistController", function($scope,$http, PlaylistFactory, EchonestFactory) {
 
   $scope.search = function(artist, danceability, energy){
-    var queryURL = 'http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey;
-    if(artist){
-      queryURL += '&artist=' + artist;
-    }
-    if(danceability){
-      queryURL += '&max_danceability=' + danceability;
-    }
-    if(energy){
-      queryURL += '&max_energy=' + energy;
-    }
-    queryURL += '&format=json&results=5&type=artist-radio';
-    console.log("queryURL", queryURL);
-    // $http.get('http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey + '&artist=' + artist.name + '&format=json&results=5&type=artist')
-    $http.get(queryURL)
-    .success(function(data, status, headers, config) {
-      $scope.playlist = data;
-      console.log(data);
-    })
-    .error(function(data, status, headers, config) {
-      console.log('error');
-    });
-  };
+      var playlist = PlaylistFactory.search(EchonestFactory.results.artist_summary.name, danceability, energy);
+
+      $scope.playlist = PlaylistFactory.results;
+      // console.log('PLAYLIST RESULTS', $scope.playlist);
+      // $scope.initialDanceability = PlaylistFactory.search($scope.selectedArtist, danceability, energy)[0]
+    };
 
 });
 
@@ -57,6 +40,10 @@ muse.controller("PlaylistController", function($scope,$http, EchonestFactory) {
 muse.controller("YoutubeController", function($scope,$http, Youtube) {
 
 
+  $scope.search = function(artist, title){
+    YoutubeFactory.search();
+    // $scope.initialDanceability = PlaylistFactory.search($scope.selectedArtist, danceability, energy)[0]
+  };
 
 });
 
