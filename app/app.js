@@ -8,35 +8,46 @@ var muse = angular.module('muse', [
 muse.config(function($stateProvider){
   $stateProvider
     .state("query", {
-      url: '/',
+      url: '/query',
       templateUrl: 'app/html/query-form.html',
       controller: 'QueryController'
-    })
-    .state("playlist", {
-      url: '/playlist',
-      templateUrl: 'app/html/playlist.html',
-      controller: 'PlaylistController'
     });
 });
 
-muse.controller("QueryController", function($scope,$http, $state, EchonestFactory) {
+muse.controller("QueryController", function($scope,$http, EchonestFactory) {
 //USE songs/artist suggest for error handling
-
 //Search for songs based on query
   $scope.search = function(artist,title){
     EchonestFactory.search(artist,title);
-    $state.go('playlist');
   }
-
 });
 
 
-
-muse.controller("PlaylistController", function($scope,$http, PlaylistFactory) {
+muse.controller("PlaylistController", function($scope,$http, EchonestFactory) {
   // var playlist;
 
   $scope.search = function(artist, danceability, energy){
-    PlaylistFactory.search(artist, danceability, energy);
+    var queryURL = 'http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey;
+    if(artist){
+      queryURL += '&artist=' + artist;
+    }
+    if(danceability){
+      queryURL += '&max_danceability=' + danceability;
+    }
+    if(energy){
+      queryURL += '&max_energy=' + energy;
+    }
+    queryURL += '&format=json&results=5&type=artist-radio';
+    console.log("queryURL", queryURL);
+    // $http.get('http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey + '&artist=' + artist.name + '&format=json&results=5&type=artist')
+    $http.get(queryURL)
+    .success(function(data, status, headers, config) {
+      $scope.playlist = data;
+      console.log(data);
+    })
+    .error(function(data, status, headers, config) {
+      console.log('error');
+    });
   };
 
 });

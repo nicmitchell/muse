@@ -8,13 +8,18 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Muse</title>
-  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="app/css/style.css">
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/foundation/5.4.7/css/foundation.css">
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-mocks/angular-mocks.js"></script>
+  <script src="bower_components/ui-router/release/angular-ui-router.js"></script>
+  <script src="bower_components/angular-echonest/src/angular-echonest.js"></script>
+  <script src="app/javascript/services/services.js"></script>
+  <script src="app/app.js"></script>
   </head>
   <body>
-    <h1>Muse</h1>
-      <div ng-view>
-
-      </div>
+    <h1 class="row">Muse</h1>
+      <div ui-view></div>
     <hr />
     <div ng-controller="PlaylistController">
       <form name="playlistForm" ng-submit='search(artist, danceability, energy)'>
@@ -33,14 +38,6 @@
         <hr />
       </div>
     </div>
-
-
-  <script src="../../bower_components/angular/angular.js"></script>
-  <script src="../../bower_components/angular-mocks/angular-mocks.js"></script>
-  <script src="../../bower_components/ui-router/release/angular-ui-router.js"></script>
-  <script src="../../bower_components/angular-echonest/src/angular-echonest.js"></script>
-  <script src="../javascript/services/services.js"></script>
-  <script src="../app.js"></script>
 
   </body>
   </html>

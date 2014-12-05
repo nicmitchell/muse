@@ -24,8 +24,8 @@ services.factory('EchonestFactory', function ($http, Echonest) {
       Echonest.artists.get({
         id: songs[0].artist_id,
         bucket: 'terms'
-      }).then(function(artist) {
-        results.artist_summary = artist;
+      }).then(function(artist_summary) {
+        results.artist_summary = artist_summary;
         console.log('ARTIST SUMMARY', artist_summary);
         return results;
       })
@@ -49,7 +49,38 @@ services.factory('EchonestFactory', function ($http, Echonest) {
 
 });
 
-services.factory('Youtube', function ($http) {
+services.factory('PlaylistFactory', function($http){
+
+  var search = function(artist, danceability, energy){
+      var queryURL = 'http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey;
+      if(artist){
+        queryURL += '&artist=' + artist.name;
+      }
+      if(danceability){
+        queryURL += '&max_danceability' + danceability;
+      }
+      if(energy){
+        queryURL += '&max_energy' + energy;
+      }
+      queryURL += '&format=json&results=5&type=artist-radio';
+      // $http.get('http://developer.echonest.com/api/v4/playlist/static?api_key=' + echonestApiKey + '&artist=' + artist.name + '&format=json&results=5&type=artist')
+      $http.get(queryURL)
+      .success(function(data, status, headers, config) {
+        return data;
+        console.log(data);
+      })
+      .error(function(data, status, headers, config) {
+        console.log('error');
+      });
+    };
+
+  return {
+    search: search
+  };
+});
+
+
+services.factory('YoutubeFactory', function ($http) {
 
     var search = function(){
       var youtubeApiKey = 'AIzaSyD8M6zcr3cPZlLL1XmBnRWBUlblNEYzMBo';

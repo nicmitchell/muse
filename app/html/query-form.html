@@ -1,0 +1,8 @@
+ <form ng-controller="QueryController" name="queryForm" ng-submit='search(artist, title)'>
+        <h3>Artist</h3>
+        <input type='text' name="artist" ng-model='artist' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
+        <h3>Title</h3>
+        <input type='text' name="title" ng-model='title' ng-class="{'error': queryForm.$invalid && queryForm.$dirty}">
+        <button>Search</button>
+        <h3>Searching for {{artist}} {{title}}</h3>
+  </form>
