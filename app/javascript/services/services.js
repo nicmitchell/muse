@@ -1,7 +1,5 @@
 var services = angular.module('services', ['angular-echonest'])
 
-var echonestApiKey = 'CNQ7EJLGCHNW8QOIT';
-
 services.config(['EchonestProvider', function(EchonestProvider) {
   EchonestProvider.setApiKey(echonestApiKey);
 }]);
