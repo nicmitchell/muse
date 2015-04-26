@@ -4,7 +4,7 @@ A smarter, smart playlist built with Angular and Foundation utilizing song data 
 ## Usage
 Enter an artist and song name and click "Search"
 Adjust the range sliders for danceability, energy, etc.
-Click "Update Platlist" to get a new set of songs
+Click "Update Playlist" to get a new set of songs
 
 ## Getting Started
 - [Obtain an EchoNest API key](http://developer.echonest.com/raw_tutorials/register.html)
@@ -12,3 +12,8 @@ Click "Update Platlist" to get a new set of songs
   - Add your API key 
   - Uncomment the line
   - Rename the file to `echonest.js`
+
+## Screenshot
+
+
+![Imgur](http://i.imgur.com/EwQ9jda.png)
