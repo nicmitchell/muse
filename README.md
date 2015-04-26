@@ -14,6 +14,6 @@ Click "Update Playlist" to get a new set of songs
   - Rename the file to `echonest.js`
 
 ## Screenshot
-
+======
 
 ![Imgur](http://i.imgur.com/EwQ9jda.png)
