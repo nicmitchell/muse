@@ -16,4 +16,4 @@ Click "Update Playlist" to get a new set of songs
 ## Screenshot
 ======
 
-![Imgur](http://i.imgur.com/EwQ9jda.png)
+![Screenshot](http://i.imgur.com/EwQ9jda.png)
